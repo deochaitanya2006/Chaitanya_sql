@@ -452,9 +452,91 @@ mysql -u root -p < ecommerce_db.sql
 
 Or run the statements directly in MySQL Workbench / CLI in the order: Categories → Suppliers → Customers → Addresses → Products → Orders → Order_Items → Payments → Reviews.
 
-📄 License
+🏥 Hospital Database Management System
 
-This project is for educational purposes as part of coursework.
+A simple MySQL-based Hospital Database Management System designed to store and manage information about patients, doctors, appointments, and hospital admissions.
+
+📌 Project Overview
+
+This project demonstrates the use of MySQL relational databases, including:
+
+Database and table creation
+Primary and foreign keys
+Relationships between tables
+Data insertion
+Basic SQL queries
+🗂️ Database Structure
+
+The database is named:
+
+hospital_db
+Tables
+Table	Description
+patients	Stores patient details
+doctors	Stores doctor details
+appointments	Stores patient appointments and consultation fees
+admissions	Stores hospital admission and treatment details
+🔗 Relationships
+PATIENTS (1) ──────── (N) APPOINTMENTS (N) ──────── (1) DOCTORS
+     │
+     │ 1
+     │
+     │ N
+ADMISSIONS
+Foreign Keys
+appointments.patient_id → patients.patient_id
+appointments.doctor_id → doctors.doctor_id
+admissions.patient_id → patients.patient_id
+📋 Table Attributes
+Patients
+patient_id – Primary Key
+patient_name – Patient name
+gender – Gender
+age – Age
+city – City
+registration_date – Registration date
+Doctors
+doctor_id – Primary Key
+doctor_name – Doctor name
+specialization – Medical specialization
+department – Department
+Appointments
+appointment_id – Primary Key
+patient_id – Foreign Key
+doctor_id – Foreign Key
+appointment_date – Appointment date
+status – Appointment status
+consultation_fee – Consultation fee
+Admissions
+admission_id – Primary Key
+patient_id – Foreign Key
+admission_date – Admission date
+discharge_date – Discharge date
+diagnosis – Patient diagnosis
+treatment_cost – Treatment cost
+⚙️ How to Run
+Open MySQL Workbench or any MySQL client.
+Run the database creation and table creation queries.
+Insert the sample data.
+Select the database:
+USE hospital_db;
+View the tables:
+SELECT * FROM patients;
+SELECT * FROM doctors;
+SELECT * FROM appointments;
+SELECT * FROM admissions;
+⚠️ Note
+
+The query:
+
+SELECT * FROM medicines;
+
+will produce an error because a medicines table has not been created in the current database.
+
+🎯 Purpose
+
+This project is suitable for learning and demonstrating SQL, MySQL, relational database design, primary keys, foreign keys, and ER modeling.
+
 ## Author
 
 Copy righted by Chaitanya Deo 
