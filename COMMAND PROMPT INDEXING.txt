@@ -1,0 +1,111 @@
+COMMAND PROMPT :
+Microsoft Windows [Version 10.0.26200.9278]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\deoch>mysql -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 11
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> USE School_db;
+Database changed
+mysql> CREATE TABLE students(
+    -> student_id INT PRIMARY KEY,
+    -> student_name VARCHAR(50),
+    -> age INT,
+    -> class INT,
+    -> section CHAR(1),
+    -> city VARCHAR(50),
+    -> marks INT
+    -> );
+ERROR 1050 (42S01): Table 'students' already exists
+mysql> DROP TABLE IF EXISTS students;
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> CREATE TABLE students (
+    ->     student_id INT PRIMARY KEY,
+    ->     student_name VARCHAR(50),
+    ->     age INT,
+    ->     class INT,
+    ->     section CHAR(1),
+    ->     city VARCHAR(50),
+    ->     marks INT
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> INSERT INTO students VALUES
+    -> (101, 'Aarav', 14, 9, 'A', 'Nagpur', 85),
+    -> (102, 'Ananya', 15, 10, 'B', 'Pune', 92),
+    -> (103, 'Rahul', 14, 9, 'A', 'Nagpur', 78),
+    -> (104, 'Priya', 15, 10, 'A', 'Mumbai', 88),
+    -> (105, 'Rohan', 13, 8, 'B', 'Nagpur', 74),
+    -> (106, 'Sneha', 14, 9, 'B', 'Pune', 95),
+    -> (107, 'Aditya', 15, 10, 'A', 'Nagpur', 81),
+    -> (108, 'Isha', 13, 8, 'A', 'Mumbai', 89),
+    -> (109, 'Karan', 14, 9, 'B', 'Nagpur', 76),
+    -> (110, 'Neha', 15, 10, 'B', 'Pune', 94);
+Query OK, 10 rows affected (0.06 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM students;
++------------+--------------+------+-------+---------+--------+-------+
+| student_id | student_name | age  | class | section | city   | marks |
++------------+--------------+------+-------+---------+--------+-------+
+|        101 | Aarav        |   14 |     9 | A       | Nagpur |    85 |
+|        102 | Ananya       |   15 |    10 | B       | Pune   |    92 |
+|        103 | Rahul        |   14 |     9 | A       | Nagpur |    78 |
+|        104 | Priya        |   15 |    10 | A       | Mumbai |    88 |
+|        105 | Rohan        |   13 |     8 | B       | Nagpur |    74 |
+|        106 | Sneha        |   14 |     9 | B       | Pune   |    95 |
+|        107 | Aditya       |   15 |    10 | A       | Nagpur |    81 |
+|        108 | Isha         |   13 |     8 | A       | Mumbai |    89 |
+|        109 | Karan        |   14 |     9 | B       | Nagpur |    76 |
+|        110 | Neha         |   15 |    10 | B       | Pune   |    94 |
++------------+--------------+------+-------+---------+--------+-------+
+10 rows in set (0.00 sec)
+
+mysql> EXPLAIN SELECT * FROM students WHERE city = 'Nagpur';
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table    | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | students | NULL       | ALL  | NULL          | NULL | NULL    | NULL |   10 |    10.00 | Using where |
++----+-------------+----------+------------+------+---------------+------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql>
+mysql> CREATE INDEX idx_student_city
+    -> ON students(city);
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> SHOW INDEX FROM students;
++----------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| Table    | Non_unique | Key_name         | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment | Visible | Expression |
++----------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+| students |          0 | PRIMARY          |            1 | student_id  | A         |          10 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
+| students |          1 | idx_student_city |            1 | city        | A         |           3 |     NULL |   NULL | YES  | BTREE      |         |               | YES     | NULL       |
++----------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+2 rows in set (0.01 sec)
+
+mysql>
+mysql> EXPLAIN SELECT * FROM students WHERE city = 'Nagpur';
++----+-------------+----------+------------+------+------------------+------------------+---------+-------+------+----------+-------+
+| id | select_type | table    | partitions | type | possible_keys    | key              | key_len | ref   | rows | filtered | Extra |
++----+-------------+----------+------------+------+------------------+------------------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | students | NULL       | ref  | idx_student_city | idx_student_city | 203     | const |    5 |   100.00 | NULL  |
++----+-------------+----------+------------+------+------------------+------------------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql>
+
+
