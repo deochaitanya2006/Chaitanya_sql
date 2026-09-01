@@ -1,0 +1,95 @@
+Microsoft Windows [Version 10.0.26200.9278]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\deoch>mysql -u root -p
+Enter password: *********
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 10
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE college;
+ERROR 1007 (HY000): Can't create database 'college'; database exists
+mysql> CREATE DATABASE college_tr;
+Query OK, 1 row affected (0.06 sec)
+
+mysql> USE college_tr;
+Database changed
+mysql> CREATE TABLE student (
+    ->     roll_no INT PRIMARY KEY,
+    ->     name VARCHAR(50),
+    ->     branch VARCHAR(20),
+    ->     cgpa DECIMAL(3,2)
+    -> );
+Query OK, 0 rows affected (0.11 sec)
+
+mysql> INSERT INTO student VALUES
+    -> (101, 'Chaitanya', 'ECE', 9.70),
+    -> (102, 'Rahul', 'ECE', 8.50),
+    -> (103, 'Amit', 'CSE', 8.90),
+    -> (104, 'Siddhi', 'ECE', 9.20);
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM student;
++---------+-----------+--------+------+
+| roll_no | name      | branch | cgpa |
++---------+-----------+--------+------+
+|     101 | Chaitanya | ECE    | 9.70 |
+|     102 | Rahul     | ECE    | 8.50 |
+|     103 | Amit      | CSE    | 8.90 |
+|     104 | Siddhi    | ECE    | 9.20 |
++---------+-----------+--------+------+
+4 rows in set (0.00 sec)
+
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> UPDATE student
+    -> SET cgpa = 8.50
+    -> WHERE roll_no = 101;
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT cgpa
+    -> FROM student
+    -> WHERE roll_no = 101;
++------+
+| cgpa |
++------+
+| 8.50 |
++------+
+1 row in set (0.04 sec)
+
+mysql> ROLLBACK;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> SELECT cgpa
+    -> FROM student
+    -> WHERE roll_no = 101;
++------+
+| cgpa |
++------+
+| 9.70 |
++------+
+1 row in set (0.00 sec)
+
+mysql> SET SESSION TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> SELECT @@transaction_isolation;
++-------------------------+
+| @@transaction_isolation |
++-------------------------+
+| READ-UNCOMMITTED        |
++-------------------------+
+1 row in set (0.00 sec)
+
+mysql>
